@@ -20,6 +20,19 @@
 #'   NHANESraw = table(NHANESraw$Race1) / nrow(NHANESraw),
 #'   diff = (table(NHANES$Race1) - table(NHANESraw$Race1)) / nrow(NHANESraw)
 #' )
+#' # SmokeNow is only asked of people who answer Yes to Smoke100
+#' if (require(mosaic)) {
+#'   nhanes <- 
+#'     NHANES %>% 
+#'     mutate(
+#'       SmokingStatus = derivedFactor(
+#'         Current = SmokeNow == "Yes",
+#'         Former = SmokeNow == "No",
+#'         Never  = Smoke100 == "No"
+#'         )
+#'       )
+#'    tally( ~SmokingStatus, data = nhanes )
+#' }
 #'
 #' @format data frames with raw and resampled versions of the NHANES data.  See below for details 
 #' and descriptions of the varaibles.
@@ -206,6 +219,22 @@
 #'       Reported for female participants aged 20 years or older.}
 #' \item{nBabies}{How many of participants deliveries resulted in live births.
 #'                Reported for female participants aged 20 years or older.}
+#' \item{PregnantNow}{Pregnancy status at the time of the health examination 
+#' was ascertained for females 8-59 years of age. 
+#' Due to disclosure risks pregnancy status was only be released for women 20-44 
+#' years of age. The information used included urine pregnancy test results 
+#' and self-reported pregnancy status. Urine pregnancy tests were performed prior 
+#' to the dual energy x-ray absorptiometry (DXA) exam. 
+#' Persons who reported they were pregnant at the time of exam were assumed to 
+#' be pregnant. As a result, if the urine test was negative, but the subject 
+#' reported they were pregnant, the status was coded as \code{"Yes"}.
+#' If the urine pregnancy results were negative and the respondent stated that they 
+#' were not pregnant, the respondent was coded as \code{"No"} If the urine pregnancy 
+#' results were negative and the respondent did not know her pregnancy status, 
+#' the respondent was coded \code{"unknown"}  Persons who were interviewed, 
+#' but not examined also have a value of \code{"unknown"}. In addition
+#' there are missing values. 
+#' }
 #' \item{Age1stBaby}{Age of participant at time of first live birth. 
 #'                  14 years or under = 14,  45 years or older = 45. 
 #'                  Reported for female participants aged 20 years or older.}
@@ -246,7 +275,9 @@
 #' \item{AlcoholYear}{Estimated number of days over the past year that participant drank 
 #' alcoholic beverages. Reported for participants aged 18 years or older.}
 #' \item{SmokeNow}{Study participant currently smokes cigarettes regularly. 
-#' Reported for participants aged 20 years or older as \code{Yes} or \code{No}.}
+#' Reported for participants aged 20 years or older as \code{Yes} or \code{No}, provieded they
+#' answered Yes to having somked 100 or more cigarettes in their life time.  All subjects who 
+#' have not smoked 100 or more cigarettes are listed as \code{NA} here.}
 #' \item{Smoke100}{Study participant has smoked at least 100 cigarettes in their entire life.
 #'  Reported for participants aged 20 years or older as \code{Yes} or \code{No}.}
 #' \item{SmokeAge}{Age study participant first started to smoke cigarettes fairly regularly. 
@@ -290,4 +321,5 @@
 #'   }
 #' }
 #' 
+
 NA
